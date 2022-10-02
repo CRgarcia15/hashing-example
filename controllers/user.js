@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const user = require('../models/user')
 
 router.post('/login', async (req, res) => {
     const {username, password} = req.body
@@ -16,7 +18,19 @@ router.post('/login', async (req, res) => {
     }
 
     res.json({'message': 'You logged in'})
+    
+    //JWT 
+    const payload = {
+    id: user._id,
+    username: user.username
+    }
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d'})
+
+    res.json({'token': token})
 })
+
+
 
 router.post('/', async (req, res) => {
     const {username, password} = req.body
