@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
         id: createdUser._id,
         username:createdUser.username
     }
-
+    // Session ends in 1 day 
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d'})
 
     res.json({'token': token})
